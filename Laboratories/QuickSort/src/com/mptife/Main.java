@@ -1,12 +1,12 @@
 package com.mptife;
 
 public class Main {
-    private static int resolution = 30000;
+    private static int resolution = 400;
 
     //private static int maxSize = 520000000;
-    private static int maxSize = 200000;
+    private static int maxSize = 20000;
 
-    private static int repeatTimes = 1;
+    private static int repeatTimes = 20;
 
     private static long[] attemptTimesArray = new long[repeatTimes];
 
@@ -24,7 +24,7 @@ public class Main {
         1 - ascending
         2 - descending
     */
-    private static int initialOrder = 1;
+    private static int initialOrder = 2;
 
     /*
         Maximum time of sorting
