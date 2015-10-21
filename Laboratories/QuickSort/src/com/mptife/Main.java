@@ -1,7 +1,7 @@
 package com.mptife;
 
 public class Main {
-    private static int resolution = 1000;
+    private static int resolution = 30000;
 
     //private static int maxSize = 520000000;
     private static int maxSize = 200000;
@@ -16,7 +16,7 @@ public class Main {
         1 - first element
         2 - last element
     */
-    private static int pivotOption = 0;
+    private static int pivotOption = 1;
 
     /*
         Order of elements before sorting
@@ -26,14 +26,21 @@ public class Main {
     */
     private static int initialOrder = 1;
 
-    private static double maxTime = 5000;
+    /*
+        Maximum time of sorting
+        if quicksort function will exceed this
+        program will be terminated
+        0 means no limit
+     */
+    private static double maxTime = 0;
 
     public static void main(String[] args) {
         int currentSize = resolution;
         int currentRepeat;
         String file = "";
         double median;
-        while (currentSize <= maxSize) {
+        boolean stackOverflow = false;
+        while ((currentSize <= maxSize)&&(!stackOverflow)) {
             currentRepeat = 0;
             file += currentSize + " ";
             while (currentRepeat < repeatTimes) {
@@ -53,33 +60,42 @@ public class Main {
                 }
                 long startTime;
                 long endTime;
-                if(pivotOption==0){
-                    startTime = System.currentTimeMillis();
-                    Algorithm.quickSortMidPivot(tab, 0, tab.length - 1);
-                    endTime = System.currentTimeMillis();
+                try{
+                    if(pivotOption==0){
+                        startTime = System.currentTimeMillis();
+                        Algorithm.quickSortMidPivot(tab, 0, tab.length - 1);
+                        endTime = System.currentTimeMillis();
+                    }
+                    else if(pivotOption==1){
+                        startTime = System.currentTimeMillis();
+                        Algorithm.quickSortFrstPivot(tab, 0, tab.length - 1);
+                        endTime = System.currentTimeMillis();
+                    }
+                    else if(pivotOption==2){
+                        startTime = System.currentTimeMillis();
+                        Algorithm.quickSortLastPivot(tab, 0, tab.length - 1);
+                        endTime = System.currentTimeMillis();
+                    }
+                    else{
+                        System.out.println("Wrong pivot value");
+                        return;
+                    }
+                    attemptTimesArray[currentRepeat] = (endTime - startTime);
+                    currentRepeat++;
+                }catch(java.lang.StackOverflowError e) {
+                    System.out.println("Stack overflow occurred!");
+                    file += e.toString();
+                    System.out.println(e);
+                    System.out.println("Program will be terminated.");
+                    stackOverflow = true;
+                    break;
                 }
-                else if(pivotOption==1){
-                    startTime = System.currentTimeMillis();
-                    Algorithm.quickSortFrstPivot(tab, 0, tab.length - 1);
-                    endTime = System.currentTimeMillis();
-                }
-                else if(pivotOption==2){
-                    startTime = System.currentTimeMillis();
-                    Algorithm.quickSortLastPivot(tab, 0, tab.length - 1);
-                    endTime = System.currentTimeMillis();
-                }
-                else{
-                    System.out.println("Wrong pivot value");
-                    return;
-                }
-
-                attemptTimesArray[currentRepeat] = (endTime - startTime);
-                currentRepeat++;
             }
+            if(stackOverflow) break;
             median = Algorithm.median(attemptTimesArray);
             file += median+"\n";
             System.out.println(currentSize + " " + median);
-            if(median>maxTime) break;
+            if(maxTime>0&&median>maxTime) break;
             currentSize += resolution;
         }
         FileHandler fileHandler = new FileHandler("C:\\Users\\piotr.weglewski\\IdeaProjects\\Modern-programming-techniques\\Laboratories\\QuickSort\\testData\\data.txt");
