@@ -1,12 +1,12 @@
 package com.mptife;
 
 public class Main {
-    private static int resolution = 400;
+    private static int resolution = 1000;
 
     //private static int maxSize = 520000000;
-    private static int maxSize = 20000;
+    private static int maxSize = 500000000;
 
-    private static int repeatTimes = 20;
+    private static int repeatTimes = 10;
 
     private static long[] attemptTimesArray = new long[repeatTimes];
 
@@ -16,7 +16,7 @@ public class Main {
         1 - first element
         2 - last element
     */
-    private static int pivotOption = 1;
+    private static int pivotOption = 2;
 
     /*
         Order of elements before sorting
@@ -32,7 +32,7 @@ public class Main {
         program will be terminated
         0 means no limit
      */
-    private static double maxTime = 0;
+    private static double maxTime = 500;
 
     public static void main(String[] args) {
         int currentSize = resolution;
@@ -98,7 +98,7 @@ public class Main {
             if(maxTime>0&&median>maxTime) break;
             currentSize += resolution;
         }
-        FileHandler fileHandler = new FileHandler("C:\\Users\\piotr.weglewski\\IdeaProjects\\Modern-programming-techniques\\Laboratories\\QuickSort\\testData\\data.txt");
+        FileHandler fileHandler = new FileHandler("/home/piotr/IdeaProjects/Modern-programming-techniques/Laboratories/QuickSort/testData/data.txt");
         fileHandler.println(file);
         fileHandler.close();
     }
