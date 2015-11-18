@@ -98,7 +98,7 @@ public class Main {
             if(maxTime>0&&median>maxTime) break;
             currentSize += resolution;
         }
-        FileHandler fileHandler = new FileHandler("/home/piotr/IdeaProjects/Modern-programming-techniques/Laboratories/QuickSort/testData/data.txt");
+        FileHandler fileHandler = new FileHandler("/home/piotr/Development/Projects/Modern-programming-techniques/Laboratories/QuickSort/testData/data.txt");
         fileHandler.println(file);
         fileHandler.close();
     }
