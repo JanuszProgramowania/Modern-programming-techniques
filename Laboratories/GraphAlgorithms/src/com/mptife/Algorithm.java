@@ -1,133 +1,92 @@
 package com.mptife;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by piotr on 15.10.15.
  */
 public class Algorithm {
-    private static Random rand = new Random();
 
-    public static double median(long[] tab){
-        double median;
-        Arrays.sort(tab);
-//        for (long l:tab){
-//            System.out.print(l + " ");
-//        }
-//        System.out.println();
-        int i = (tab.length-1)/2;
-        if((tab.length%2)==0){
-            median = (double)(tab[i]+tab[i+1])/2;
-        }
-        else{
-            return tab[i];
-        }
-        return median;
+    public static int maxValue = 100000;
+
+    private List<Integer> s = new LinkedList<>();
+    private int[] d;
+    private int[] p;
+    private int size;
+    private int m[][];
+
+    public Algorithm(int[][] m) {
+        this.size = m.length;
+        this.m = m;
+        d = new int[size];
+        p = new int[size];
     }
 
-    public static int[] generateRandom(int size) {
-        int[] tab = new int[size];
-        for (int i : tab) {
-            i = rand.nextInt();
+    public void dijkstraAlgorithm() {
+        s.add(0);
+        p[0] = 0;
+        for (int i = 1; i < size; i++) {
+            d[i] = m[0][i];
+            p[i] = 0;
         }
-        return tab;
-    }
-
-    public static int[] generateAscending(int size){
-        int tab[] = new int[size];
-        for(int i = 0; i<size; i++){
-            tab[i] = i;
-        }
-        return tab;
-    }
-
-    public static int[] generateDescending(int size){
-        int tab[] = new int[size];
-        for(int i = 0; i<size; i++){
-            tab[i] = size-i;
-        }
-        return tab;
-    }
-
-    public static void quickSortMidPivot(int tab[], int x, int y) {
-
-        int i, j, v, temp;
-
-        i = x;
-        j = y;
-        v = tab[(x + y) / 2];
         do {
-            while (tab[i] < v)
-                i++;
-            while (v < tab[j])
-                j--;
-            if (i <= j) {
-                temp = tab[i];
-                tab[i] = tab[j];
-                tab[j] = temp;
-                i++;
-                j--;
+            int nearest = findNearest();
+            s.add(nearest);
+            for (int i = 0; i < size; i++) {
+                if (s.contains(i)) continue;
+                if ((d[nearest] + m[nearest][i]) < d[i]) {
+                    d[i] = d[nearest] + m[nearest][i];
+                    p[i] = nearest;
+                }
             }
-        }
-        while (i <= j);
-        if (x < j)
-            quickSortMidPivot(tab, x, j);
-        if (i < y)
-            quickSortMidPivot(tab, i, y);
+        } while (!this.isVSEmpty());
     }
 
-    public static void quickSortFrstPivot(int tab[], int x, int y) {
-
-        int i, j, v, temp;
-
-        i = x;
-        j = y;
-        v = tab[x];
-        do {
-            while (tab[i] < v)
-                i++;
-            while (v < tab[j])
-                j--;
-            if (i <= j) {
-                temp = tab[i];
-                tab[i] = tab[j];
-                tab[j] = temp;
-                i++;
-                j--;
-            }
-        }
-        while (i <= j);
-        if (x < j)
-            quickSortFrstPivot(tab, x, j);
-        if (i < y)
-            quickSortFrstPivot(tab, i, y);
+    private boolean isVSEmpty() {
+        for (int i = 0; i < size; i++)
+            if (s.contains(i)) continue;
+            else return false;
+        return true;
     }
 
-    public static void quickSortLastPivot(int tab[], int x, int y) {
-
-        int i, j, v, temp;
-
-        i = x;
-        j = y;
-        v = tab[y];
-        do {
-            while (tab[i] < v)
-                i++;
-            while (v < tab[j])
-                j--;
-            if (i <= j) {
-                temp = tab[i];
-                tab[i] = tab[j];
-                tab[j] = temp;
-                i++;
-                j--;
-            }
+    private int findNearest() {
+        int result = maxValue;
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (s.contains(i)) continue;
+            result = d[i];
+            index = i;
         }
-        while (i <= j);
-        if (x < j)
-            quickSortLastPivot(tab, x, j);
-        if (i < y)
-            quickSortLastPivot(tab, i, y);
+        for (int i = 0; i < size; i++) {
+            if (s.contains(i)) continue;
+            int temp = d[i];
+            if (temp < result) {
+                result = temp;
+                index = i;
+            }
+
+        }
+
+        return index;
+    }
+
+    public String getSolution() {
+        String solution = "";
+        for (int i = 0; i < size; i++) {
+            solution += "Path: " + getPath(i) + "\t\t\t\tDistance: " + d[i] + "\n";
+        }
+        return solution;
+    }
+
+    private String getPath(int v) {
+        String path = "";
+        if (v == p[v])
+            return String.valueOf(v + 1);
+        else {
+            path += getPath(p[v]);
+            path += "\t" + String.valueOf(v + 1);
+        }
+        return path;
     }
 }
