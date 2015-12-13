@@ -5,7 +5,7 @@ public class Main {
 
     public static void main(String[] args) {
         FileHandler fileHandler = new FileHandler(filePath);
-        // Read graph from file
+        // Reading graph from file in form of coincidence matrix
         int[][] matrix = fileHandler.getNeighbourhoodMatrix();
         Algorithm algorithm = new Algorithm(matrix);
         algorithm.dijkstraAlgorithm();
