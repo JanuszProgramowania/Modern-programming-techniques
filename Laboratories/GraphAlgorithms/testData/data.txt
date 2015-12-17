@@ -24,3 +24,17 @@
 9   12  13
 10  12  9
 11  12  9
+
+Path: 1				Distance: 0
+Path: 1	2				Distance: 17
+Path: 1	3				Distance: 21
+Path: 1	4				Distance: 13
+Path: 1	2	5				Distance: 33
+Path: 1	4	6				Distance: 32
+Path: 1	2	7				Distance: 27
+Path: 1	3	8				Distance: 31
+Path: 1	4	9				Distance: 23
+Path: 1	4	9	10				Distance: 43
+Path: 1	3	8	11				Distance: 41
+Path: 1	4	9	12				Distance: 36
+
